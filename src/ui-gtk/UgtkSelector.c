@@ -276,8 +276,8 @@ static void ugtk_selector_filter_init (struct UgtkSelectorFilter* filter, UgtkSe
 	title  = g_strconcat (UGTK_APP_NAME " - ", _("Mark by filter"), NULL);
 	dialog = (GtkDialog*) gtk_dialog_new_with_buttons (title, selector->parent,
 			0,
-			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			_("Cancel"), GTK_RESPONSE_CANCEL,
+			_("OK"),     GTK_RESPONSE_OK,
 			NULL);
 	g_free (title);
 	gtk_window_set_modal ((GtkWindow*) dialog, FALSE);

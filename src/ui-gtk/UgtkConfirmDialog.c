@@ -85,8 +85,8 @@ UgtkConfirmDialog*  ugtk_confirm_dialog_new (UgtkConfirmDialogMode mode, UgtkApp
 	cdialog->self = (GtkDialog*) gtk_dialog_new_with_buttons (temp,
 			app->window.self,
 			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_NO,  GTK_RESPONSE_NO,
-			GTK_STOCK_YES, GTK_RESPONSE_YES,
+			_("No"),  GTK_RESPONSE_NO,
+			_("Yes"), GTK_RESPONSE_YES,
 			NULL);
 	g_free (temp);
 #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION < 14
@@ -98,7 +98,7 @@ UgtkConfirmDialog*  ugtk_confirm_dialog_new (UgtkConfirmDialogMode mode, UgtkApp
 	// image and label
 	hbox = (GtkBox*) gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 	gtk_box_pack_start (hbox,
-			gtk_image_new_from_stock (GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG),
+			gtk_image_new_from_icon_name ("dialog-question-symbolic", GTK_ICON_SIZE_DIALOG),
 			FALSE, FALSE, 8);
 	gtk_box_pack_start (hbox,
 			gtk_label_new (label),

@@ -911,7 +911,7 @@ void  ugtk_menubar_sync_category (UgtkMenubar* menubar, UgtkApp* app, gboolean r
 				menu_item = gtk_image_menu_item_new_with_label (common->name);
 			else
 				menu_item = gtk_image_menu_item_new_with_label ("");
-			image = gtk_image_new_from_stock (GTK_STOCK_DND_MULTIPLE,
+			image = gtk_image_new_from_icon_name ("folder-open-symbolic",
 			                                  GTK_ICON_SIZE_MENU);
 			gtk_image_menu_item_set_image ((GtkImageMenuItem*) menu_item,
 			                               image);

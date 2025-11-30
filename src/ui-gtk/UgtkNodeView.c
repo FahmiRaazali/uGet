@@ -46,31 +46,17 @@
 // ------------------------------------
 // column data & functions for Common
 
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
 static const UgPair state_icon_pair[] =
 {
-	{(void*)(intptr_t) UGET_GROUP_FINISHED,  "go-last"},
-	{(void*)(intptr_t) UGET_GROUP_RECYCLED,  "list-remove"},
-	{(void*)(intptr_t) UGET_GROUP_PAUSED,    "media-playback-pause"},
-	{(void*)(intptr_t) UGET_GROUP_ERROR,     "dialog-error"},
-	{(void*)(intptr_t) UGET_GROUP_UPLOADING, "go-up"},
-	{(void*)(intptr_t) UGET_GROUP_COMPLETED, "gtk-yes"},
-	{(void*)(intptr_t) UGET_GROUP_QUEUING,   "text-x-generic"},
-	{(void*)(intptr_t) UGET_GROUP_ACTIVE,    "media-playback-start"},
+	{(void*)(intptr_t) UGET_GROUP_FINISHED,  "go-last-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_RECYCLED,  "edit-delete-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_PAUSED,    "media-playback-pause-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_ERROR,     "dialog-error-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_UPLOADING, "go-up-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_COMPLETED, "emblem-ok-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_QUEUING,   "text-x-generic-symbolic"},
+	{(void*)(intptr_t) UGET_GROUP_ACTIVE,    "media-playback-start-symbolic"},
 };
-#else
-static const UgPair state_icon_pair[] =
-{
-	{(void*)(intptr_t) UGET_GROUP_FINISHED,  GTK_STOCK_GOTO_LAST},
-	{(void*)(intptr_t) UGET_GROUP_RECYCLED,  GTK_STOCK_DELETE},
-	{(void*)(intptr_t) UGET_GROUP_PAUSED,    GTK_STOCK_MEDIA_PAUSE},
-	{(void*)(intptr_t) UGET_GROUP_ERROR,     GTK_STOCK_DIALOG_ERROR},
-	{(void*)(intptr_t) UGET_GROUP_UPLOADING, GTK_STOCK_GO_UP},
-	{(void*)(intptr_t) UGET_GROUP_COMPLETED, GTK_STOCK_YES},
-	{(void*)(intptr_t) UGET_GROUP_QUEUING,   GTK_STOCK_FILE},
-	{(void*)(intptr_t) UGET_GROUP_ACTIVE,    GTK_STOCK_MEDIA_PLAY},
-};
-#endif
 static const int state_icon_pair_len = sizeof (state_icon_pair) / sizeof (UgPair);
 
 static void col_set_icon (GtkTreeViewColumn *tree_column,
@@ -91,11 +77,7 @@ static void col_set_icon (GtkTreeViewColumn *tree_column,
 		return;
 
 	node = node->base;
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	icon_name = "text-x-generic";
-#else
-	icon_name = GTK_STOCK_FILE;
-#endif
+	icon_name = "text-x-generic-symbolic";
 	// select icon_name
 	for (index = 0;  index < state_icon_pair_len;  index++) {
 		key = (intptr_t)state_icon_pair[index].key;
@@ -105,11 +87,7 @@ static void col_set_icon (GtkTreeViewColumn *tree_column,
 			break;
 		}
 	}
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
 	g_object_set (cell, "icon-name", icon_name, NULL);
-#else
-	g_object_set (cell, "stock-id", icon_name, NULL);
-#endif
 }
 
 // ------------------------------------
@@ -630,17 +608,10 @@ static void col_set_icon_c (GtkTreeViewColumn *tree_column,
 	UgetNode*  node;
 
 	node = iter->user_data;
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
 	if (uget_node_get_group(node) & UGET_GROUP_PAUSED)
-		g_object_set (cell, "icon-name", "media-playback-pause", NULL);
+		g_object_set (cell, "icon-name", "media-playback-pause-symbolic", NULL);
 	else
-		g_object_set (cell, "icon-name", "gtk-dnd-multiple", NULL);
-#else
-	if (uget_node_get_group(node) & UGET_GROUP_PAUSED)
-		g_object_set (cell, "stock-id", GTK_STOCK_MEDIA_PAUSE, NULL);
-	else
-		g_object_set (cell, "stock-id", GTK_STOCK_DND_MULTIPLE, NULL);
-#endif
+		g_object_set (cell, "icon-name", "folder-open-symbolic", NULL);
 }
 
 // ------------------------------------
@@ -709,11 +680,7 @@ static void col_set_icon_s (GtkTreeViewColumn *tree_column,
 		return;
 
 	// select icon_name
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	icon_name = "gtk-dnd-multiple";
-#else
-	icon_name = GTK_STOCK_DND_MULTIPLE;
-#endif
+	icon_name = "folder-symbolic"; // Default for generic status or dnd-multiple replacement
 	if (node->real) {
 		group = uget_node_get_group(node);
 		for (index = 0;  index < state_icon_pair_len;  index++) {
@@ -724,11 +691,7 @@ static void col_set_icon_s (GtkTreeViewColumn *tree_column,
 			}
 		}
 	}
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
 	g_object_set (cell, "icon-name", icon_name, NULL);
-#else
-	g_object_set (cell, "stock-id", icon_name, NULL);
-#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -1083,6 +1046,6 @@ void  ugtk_node_view_use_large_icon (GtkTreeView* view, gboolean is_large, int f
 	gtk_tree_view_column_set_min_width (column, icon_width);
 	gtk_tree_view_column_set_fixed_width (column, fixed_width);
 	list = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT(column));
-	g_object_set (list->data, "stock-size", icon_size, NULL);
+	g_object_set (list->data, "pixel-size", icon_width, NULL); // pixel-size instead of stock-size
 	g_list_free (list);
 }

@@ -56,20 +56,18 @@ UgtkBatchDialog*  ugtk_batch_dialog_new (const char* title,
 	ugtk_node_dialog_init ((UgtkNodeDialog*) bdialog, title, app, FALSE);
 	ugtk_download_form_set_multiple (&bdialog->download, TRUE);
 
-#if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION < 14
-	gtk_window_set_has_resize_grip ((GtkWindow*)bdialog->self, FALSE);
-#endif
+
 	gtk_window_resize ((GtkWindow*)bdialog->self, 500, 350);
 	// back button
-	gtk_dialog_add_button (bdialog->self, GTK_STOCK_GO_BACK,
+	gtk_dialog_add_button (bdialog->self, _("Back"),
 	                       GTK_RESPONSE_REJECT);
 	// forward button
-	gtk_dialog_add_button (bdialog->self, GTK_STOCK_GO_FORWARD,
+	gtk_dialog_add_button (bdialog->self, _("Forward"),
 	                       GTK_RESPONSE_ACCEPT);
 	// OK & cancel buttons
-	gtk_dialog_add_button (bdialog->self, GTK_STOCK_CANCEL,
+	gtk_dialog_add_button (bdialog->self, _("Cancel"),
 	                       GTK_RESPONSE_CANCEL);
-	gtk_dialog_add_button (bdialog->self, GTK_STOCK_OK,
+	gtk_dialog_add_button (bdialog->self, _("OK"),
 	                       GTK_RESPONSE_OK);
 	gtk_dialog_set_default_response (bdialog->self, GTK_RESPONSE_OK);
 
@@ -251,13 +249,8 @@ static void on_selector_response (UgtkBatchDialog* bdialog)
 		dnode = uget_node_new (NULL);
 		common = ug_info_realloc (dnode->info, UgetCommonInfo);
 		ugtk_node_dialog_get ((UgtkNodeDialog*) bdialog, dnode->info);
-#if 0
-		common->uri = link->data;
-		link->data = NULL;
-#else
 		common->uri = ug_strdup (link->data);
 		g_free (link->data);
-#endif
 		uget_app_add_download ((UgetApp*) app, dnode, cnode, FALSE);
 	}
 

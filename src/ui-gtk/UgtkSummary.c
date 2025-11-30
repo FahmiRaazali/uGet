@@ -107,7 +107,7 @@ void  ugtk_summary_show (UgtkSummary* summary, UgetNode* node)
 		}
 		ugtk_summary_store_realloc_next (summary->store, &iter);
 		gtk_list_store_set (summary->store, &iter,
-				UGTK_SUMMARY_COLUMN_ICON , GTK_STOCK_FILE,
+				UGTK_SUMMARY_COLUMN_ICON , "document-symbolic",
 				UGTK_SUMMARY_COLUMN_NAME , name,
 				UGTK_SUMMARY_COLUMN_VALUE, value,
 				-1);
@@ -119,7 +119,7 @@ void  ugtk_summary_show (UgtkSummary* summary, UgetNode* node)
 		value = (temp.common) ? temp.common->folder : NULL;
 		ugtk_summary_store_realloc_next (summary->store, &iter);
 		gtk_list_store_set (summary->store, &iter,
-				UGTK_SUMMARY_COLUMN_ICON , GTK_STOCK_DIRECTORY,
+				UGTK_SUMMARY_COLUMN_ICON , "folder-symbolic",
 				UGTK_SUMMARY_COLUMN_NAME , name,
 				UGTK_SUMMARY_COLUMN_VALUE, value,
 				-1);
@@ -137,7 +137,7 @@ void  ugtk_summary_show (UgtkSummary* summary, UgetNode* node)
 			value = NULL;
 		ugtk_summary_store_realloc_next (summary->store, &iter);
 		gtk_list_store_set (summary->store, &iter,
-				UGTK_SUMMARY_COLUMN_ICON , GTK_STOCK_DND_MULTIPLE,
+				UGTK_SUMMARY_COLUMN_ICON , "folder-open-symbolic",
 				UGTK_SUMMARY_COLUMN_NAME , name,
 				UGTK_SUMMARY_COLUMN_VALUE, value,
 				-1);
@@ -149,7 +149,7 @@ void  ugtk_summary_show (UgtkSummary* summary, UgetNode* node)
 		value = (temp.common) ? temp.common->uri : NULL;
 		ugtk_summary_store_realloc_next (summary->store, &iter);
 		gtk_list_store_set (summary->store, &iter,
-				UGTK_SUMMARY_COLUMN_ICON , GTK_STOCK_NETWORK,
+				UGTK_SUMMARY_COLUMN_ICON , "network-wired-symbolic",
 				UGTK_SUMMARY_COLUMN_NAME , name,
 				UGTK_SUMMARY_COLUMN_VALUE, value,
 				-1);
@@ -161,20 +161,20 @@ void  ugtk_summary_show (UgtkSummary* summary, UgetNode* node)
 		temp.event = (UgetEvent*) temp.log->messages.head;
 	if (summary->visible.message) {
 		if (temp.event == NULL) {
-			stock = GTK_STOCK_INFO;
+			stock = "dialog-information-symbolic";
 			value = NULL;
 		}
 		else {
 			value = temp.event->string;
 			switch (temp.event->type) {
 			case UGET_EVENT_ERROR:
-				stock = GTK_STOCK_DIALOG_ERROR;
+				stock = "dialog-error-symbolic";
 				break;
 			case UGET_EVENT_WARNING:
-				stock = GTK_STOCK_DIALOG_WARNING;
+				stock = "dialog-warning-symbolic";
 				break;
 			default:
-				stock = GTK_STOCK_INFO;
+				stock = "dialog-information-symbolic";
 				break;
 			}
 		}
@@ -259,7 +259,7 @@ static GtkTreeView* ugtk_summary_view_new ()
 	gtk_tree_view_insert_column_with_attributes (
 			view, UGTK_SUMMARY_COLUMN_ICON,
 			NULL, renderer,
-			"stock-id", UGTK_SUMMARY_COLUMN_ICON,
+			"icon-name", UGTK_SUMMARY_COLUMN_ICON,
 			NULL);
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_insert_column_with_attributes (
@@ -297,12 +297,14 @@ static void ugtk_summary_menu_init (UgtkSummary* summary, GtkAccelGroup* accel_g
 	// UgtkSummary.menu
 	menu = gtk_menu_new ();
 	// Copy
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_COPY, accel_group);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Copy"));
+	image = gtk_image_new_from_icon_name ("edit-copy-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), image);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 	summary->menu.copy = menu_item;
 	// Copy All
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Copy _All"));
-	image = gtk_image_new_from_stock (GTK_STOCK_SELECT_ALL, GTK_ICON_SIZE_MENU);
+	image = gtk_image_new_from_icon_name ("edit-select-all-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), image);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 	summary->menu.copy_all = menu_item;

@@ -61,8 +61,8 @@ UgtkSettingDialog*  ugtk_setting_dialog_new (const gchar* title, GtkWindow* pare
 	dialog = g_malloc0 (sizeof (UgtkSettingDialog));
 	dialog->self = (GtkDialog*) gtk_dialog_new_with_buttons (title, parent,
 			GTK_DIALOG_DESTROY_WITH_PARENT,
-			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			_("Cancel"), GTK_RESPONSE_CANCEL,
+			_("OK"),     GTK_RESPONSE_OK,
 			NULL);
 #if GTK_MAJOR_VERSION <= 3 && GTK_MINOR_VERSION < 14
 	gtk_window_set_has_resize_grip ((GtkWindow*) dialog->self, FALSE);

@@ -57,21 +57,13 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 	// New Download
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New _Download..."));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_NEW);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-new", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-new-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.create_download = menu_item;
 	// New Category
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New _Category..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("gtk-dnd-multiple", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DND_MULTIPLE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("folder-new-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.create_category = menu_item;
@@ -79,14 +71,14 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 //	gtk_menu_shell_append ((GtkMenuShell*)submenu, gtk_separator_menu_item_new() );
 	// New Torrent
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New Torrent..."));
-//	image = gtk_image_new_from_stock (GTK_STOCK_FILE, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	image = gtk_image_new_from_icon_name ("application-x-bittorrent-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.create_torrent = menu_item;
 	// New Metalink
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New Metalink..."));
-//	image = gtk_image_new_from_stock (GTK_STOCK_FILE, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	image = gtk_image_new_from_icon_name ("application-x-metalink-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.create_metalink = menu_item;
 
@@ -98,41 +90,25 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	// Batch downloads - Clipboard batch
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Clipboard batch..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("edit-paste", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_PASTE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("edit-paste-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, menu_item);
 	menubar->file.batch.clipboard = menu_item;
 	// Batch downloads - URL Sequence batch
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_URL Sequence batch..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("view-sort-ascending", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_SORT_ASCENDING, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("view-sort-ascending-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, menu_item);
 	menubar->file.batch.sequence = menu_item;
 	// Batch downloads - Text file import (.txt)
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Text file import (.txt)..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("go-next", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("go-next-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, menu_item);
 	menubar->file.batch.text_import = menu_item;
 	// Batch downloads - HTML file import (.html)
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_HTML file import (.html)..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("gtk-convert", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_CONVERT, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("gtk-convert-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, menu_item);
 	menubar->file.batch.html_import = menu_item;
@@ -140,11 +116,7 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, gtk_separator_menu_item_new() );
 	// Batch downloads - Export to Text file (.txt)
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Export to Text file (.txt)..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("go-previous", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("go-previous-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)submenu, menu_item);
 	menubar->file.batch.text_export = menu_item;
@@ -155,33 +127,21 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 	// Open Category
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Open category..."));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_LOAD);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-open", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_OPEN, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-open-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.open_category = menu_item;
 	// Save Category
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Save category as..."));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_SAVE);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-save", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_SAVE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-save-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.save_category = menu_item;
 	// Save All
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Save _all settings"));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_SAVE_ALL);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-save", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_SAVE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-save-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.save = menu_item;
@@ -193,7 +153,9 @@ static void ugtk_menubar_file_init (UgtkMenubar* menubar, GtkAccelGroup* accel_g
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.offline_mode = menu_item;
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, accel_group);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Quit"));
+	image = gtk_image_new_from_icon_name ("application-exit-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->file.quit = menu_item;
 }
@@ -283,11 +245,7 @@ static void ugtk_menubar_edit_init (UgtkMenubar* menubar)
 
 //	menu_item = gtk_menu_item_new_with_mnemonic (_("_Settings..."));
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Settings..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-properties", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_PROPERTIES, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-properties-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->edit.settings = menu_item;
@@ -464,42 +422,34 @@ static void ugtk_menubar_category_init (UgtkMenubar* menubar)
 	menubar->category.self = menu;
 	// New Category
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("_New Category..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("gtk-dnd-multiple", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DND_MULTIPLE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("folder-new-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->category.create = menu_item;
 	// Delete Category
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("_Delete Category"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("window-close-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->category.delete = menu_item;
 	// Properties
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_PROPERTIES, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Properties"));
+	image = gtk_image_new_from_icon_name ("document-properties-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->category.properties = menu_item;
 
 	gtk_menu_shell_append ((GtkMenuShell*)menu, gtk_separator_menu_item_new() );
 	// Move Up
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GO_UP, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Up"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Up"));
+	image = gtk_image_new_from_icon_name ("go-up-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->category.move_up = menu_item;
 	// Move Down
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GO_DOWN, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Down"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Down"));
+	image = gtk_image_new_from_icon_name ("go-down-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->category.move_down = menu_item;
 }
@@ -521,18 +471,16 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 //	gtk_menu_shell_append((GtkMenuShell*)menu, gtk_tearoff_menu_item_new() );
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_NEW, accel_group);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New Download..."));
+	image = gtk_image_new_from_icon_name ("document-new-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.create = menu_item;
 
 //	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_DELETE, accel_group);
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Delete Entry"));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_DELETE);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("edit-delete", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DELETE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("edit-delete-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.delete = menu_item;
@@ -546,7 +494,9 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 	gtk_menu_shell_append ((GtkMenuShell*)menu, gtk_separator_menu_item_new() );
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Open"));
+	image = gtk_image_new_from_icon_name ("document-open-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_OPEN);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.open = menu_item;
@@ -554,11 +504,7 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Open _Containing folder"));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_OPEN_F);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("folder", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DIRECTORY, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("folder-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.open_folder = menu_item;
@@ -573,20 +519,15 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("_Runnable"));
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_SWITCH);
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("media-playback-start", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_MEDIA_PLAY, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("media-playback-start-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.runnable = menu_item;
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_MEDIA_PAUSE, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("P_ause"));
+	image = gtk_image_new_from_icon_name ("media-playback-pause-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_item_set_accel_path ((GtkMenuItem*) menu_item, UGTK_APP_ACCEL_PATH_SWITCH);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("P_ause"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_MEDIA_PAUSE, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.pause = menu_item;
 
@@ -594,11 +535,7 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 	// Move to --- start ---
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("_Move To"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("gtk-dnd-multiple", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DND_MULTIPLE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("folder-move-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.move_to.item = menu_item;
@@ -611,31 +548,27 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 
 	gtk_menu_shell_append ((GtkMenuShell*)menu, gtk_separator_menu_item_new() );
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GO_UP, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Up"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Up"));
+	image = gtk_image_new_from_icon_name ("go-up-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.move_up = menu_item;
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GO_DOWN, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Down"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Down"));
+	image = gtk_image_new_from_icon_name ("go-down-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.move_down = menu_item;
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GOTO_TOP, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Top"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GOTO_TOP, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Top"));
+	image = gtk_image_new_from_icon_name ("go-top-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.move_top = menu_item;
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_GOTO_BOTTOM, NULL);
-//	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Bottom"));
-//	image = gtk_image_new_from_stock (GTK_STOCK_GOTO_BOTTOM, GTK_ICON_SIZE_MENU);
-//	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Move _Bottom"));
+	image = gtk_image_new_from_icon_name ("go-bottom-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.move_bottom = menu_item;
 
@@ -666,7 +599,9 @@ static void ugtk_menubar_download_init (UgtkMenubar* menubar, GtkAccelGroup* acc
 	menubar->download.prioriy.low = menu_item;
 	// Priority --- end ---
 
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_PROPERTIES, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Properties"));
+	image = gtk_image_new_from_icon_name ("document-properties-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->download.properties = menu_item;
 }
@@ -685,55 +620,35 @@ static void ugtk_menubar_help_init (UgtkMenubar* menubar)
 
 	// Get Help Online
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Get Help Online"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("help-browser", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_HELP, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("help-browser-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.help_online = menu_item;
 
 	// Documentation
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Documentation"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("text-x-generic", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_FILE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("text-x-generic-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.documentation = menu_item;
 
 	// Support Forum
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Support Forum"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("dialog-question", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("dialog-question-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.support_forum = menu_item;
 
 	// Submit Feedback
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Submit Feedback"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("list-add-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.submit_feedback = menu_item;
 
 	// Report a Bug
 	menu_item = gtk_image_menu_item_new_with_mnemonic(_("Report a Bug"));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
 	image = gtk_image_new_from_icon_name ("dialog-warning-symbolic", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_CAPS_LOCK_WARNING, GTK_ICON_SIZE_MENU);
-#endif
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.report_bug = menu_item;
@@ -753,7 +668,9 @@ static void ugtk_menubar_help_init (UgtkMenubar* menubar)
 	menubar->help.check_updates = menu_item;
 
 	// About Uget
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_ABOUT, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("About Uget"));
+	image = gtk_image_new_from_icon_name ("help-about-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	menubar->help.about_uget = menu_item;
 }

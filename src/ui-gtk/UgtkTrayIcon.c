@@ -57,22 +57,14 @@ void ugtk_tray_icon_init (UgtkTrayIcon* trayicon)
 	menu = gtk_menu_new ();
 	// New Download
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New _Download..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-new", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-new-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	trayicon->menu.create_download = menu_item;
 
 	// New Clipboard batch
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("New Clipboard _batch..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("edit-paste", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_PASTE, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("edit-paste-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	trayicon->menu.create_clipboard = menu_item;
@@ -120,17 +112,15 @@ void ugtk_tray_icon_init (UgtkTrayIcon* trayicon)
 
 	// Settings
 	menu_item = gtk_image_menu_item_new_with_mnemonic (_("_Settings..."));
-#if GTK_MAJOR_VERSION >= 3 && GTK_MINOR_VERSION >= 10
-	image = gtk_image_new_from_icon_name ("document-properties", GTK_ICON_SIZE_MENU);
-#else
-	image = gtk_image_new_from_stock (GTK_STOCK_PROPERTIES, GTK_ICON_SIZE_MENU);
-#endif
+	image = gtk_image_new_from_icon_name ("document-properties-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	trayicon->menu.settings = menu_item;
 
 	// About
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_ABOUT, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("About"));
+	image = gtk_image_new_from_icon_name ("help-about-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	trayicon->menu.about = menu_item;
 
@@ -149,7 +139,9 @@ void ugtk_tray_icon_init (UgtkTrayIcon* trayicon)
 	trayicon->menu.offline_mode = menu_item;
 
 	// Quit
-	menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
+	menu_item = gtk_image_menu_item_new_with_mnemonic (_("Quit"));
+	image = gtk_image_new_from_icon_name ("application-exit-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_image_menu_item_set_image ((GtkImageMenuItem*)menu_item, image);
 	gtk_menu_shell_append ((GtkMenuShell*)menu, menu_item);
 	trayicon->menu.quit = menu_item;
 
@@ -163,7 +155,7 @@ void ugtk_tray_icon_init (UgtkTrayIcon* trayicon)
 	if (g_file_test (file_name, G_FILE_TEST_IS_REGULAR))
 		icon_name = UGTK_TRAY_ICON_NAME;
 	else
-		icon_name = GTK_STOCK_GO_DOWN;
+		icon_name = "go-down-symbolic";
 	g_free (file_name);
 #ifdef HAVE_APP_INDICATOR
 	trayicon->indicator = app_indicator_new ("uget-gtk", icon_name,

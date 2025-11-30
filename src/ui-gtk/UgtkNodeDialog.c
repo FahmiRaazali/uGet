@@ -131,9 +131,9 @@ UgtkNodeDialog*  ugtk_node_dialog_new (const char* title,
 	ndialog = g_malloc0 (sizeof (UgtkNodeDialog));
 	ugtk_node_dialog_init (ndialog, title, app, has_category_form);
 	// OK & cancel buttons
-	gtk_dialog_add_button (ndialog->self, GTK_STOCK_CANCEL,
+	gtk_dialog_add_button (ndialog->self, _("Cancel"),
 	                       GTK_RESPONSE_CANCEL);
-	gtk_dialog_add_button (ndialog->self, GTK_STOCK_OK,
+	gtk_dialog_add_button (ndialog->self, _("OK"),
 	                       GTK_RESPONSE_OK);
 	gtk_dialog_set_default_response (ndialog->self, GTK_RESPONSE_OK);
 

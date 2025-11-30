@@ -1283,8 +1283,8 @@ static GtkWidget*  create_file_chooser (GtkWindow* parent,
 	dialog = gtk_file_chooser_dialog_new (title,
 			parent,
 			action,
-			GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			_("Cancel"), GTK_RESPONSE_CANCEL,
+			_("OK"),     GTK_RESPONSE_OK,
 			NULL);
 	gtk_window_set_destroy_with_parent ((GtkWindow*) dialog, TRUE);
 
