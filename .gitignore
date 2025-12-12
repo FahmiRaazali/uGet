@@ -90,3 +90,7 @@ build/
 # Work in progress - not ready for upstream
 src/ui-gtk4/
 guides/
+tasks/
+
+# Editor-specific
+.zed/
