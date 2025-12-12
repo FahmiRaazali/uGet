@@ -41,120 +41,142 @@
 
 // This is for ATTACH_PARENT_PROCESS
 #ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x501	// WinXP
+#define _WIN32_WINNT 0x501 // WinXP
 #endif
 
 #include <stdio.h>
 #include <windows.h>
 
 #if defined _WINDOWS
-static void atexit_callback (void)
+static void
+atexit_callback(void)
 {
-	FreeConsole ();
+    FreeConsole();
 }
 
-static void win32_console_init (void)
+static void
+win32_console_init(void)
 {
-	typedef BOOL (CALLBACK* LPFNATTACHCONSOLE) (DWORD);
-	LPFNATTACHCONSOLE	AttachConsole;
-	HMODULE				hmod;
+    typedef BOOL(CALLBACK * LPFNATTACHCONSOLE)(DWORD);
+    LPFNATTACHCONSOLE AttachConsole;
+    HMODULE hmod;
 
-	// If stdout hasn't been redirected to a file, alloc a console
-	//  (_istty() doesn't work for stuff using the GUI subsystem)
-	if (_fileno(stdout) == -1 || _fileno(stdout) == -2) {
-		AttachConsole = NULL;
+    // If stdout hasn't been redirected to a file, alloc a console
+    //  (_istty() doesn't work for stuff using the GUI subsystem)
+    if (_fileno(stdout) == -1 || _fileno(stdout) == -2) {
+        AttachConsole = NULL;
 #ifdef UNICODE
-		if ((hmod = GetModuleHandle(L"kernel32.dll")))
+        if ((hmod = GetModuleHandle(L"kernel32.dll")))
 #else
-		if ((hmod = GetModuleHandle("kernel32.dll")))
+        if ((hmod = GetModuleHandle("kernel32.dll")))
 #endif
-		{
-			AttachConsole = (LPFNATTACHCONSOLE) GetProcAddress(hmod, "AttachConsole");
-		}
-		if ( (AttachConsole && AttachConsole (ATTACH_PARENT_PROCESS)) || AllocConsole() )
-		{
-			freopen("CONOUT$", "w", stdout);
-			freopen("CONOUT$", "w", stderr);
-			atexit (atexit_callback);
-		}
-	}
+        {
+            AttachConsole = (LPFNATTACHCONSOLE) GetProcAddress(hmod, "AttachConsole");
+        }
+        if ((AttachConsole && AttachConsole(ATTACH_PARENT_PROCESS)) || AllocConsole()) {
+            freopen("CONOUT$", "w", stdout);
+            freopen("CONOUT$", "w", stderr);
+            atexit(atexit_callback);
+        }
+    }
 }
 
-int WINAPI WinMain (HINSTANCE hThisInstance,
-                    HINSTANCE hPrevInstance,
-                    LPSTR lpszArgument,
-                    int nFunsterStil)
+int WINAPI
+WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nFunsterStil)
 {
-	int	main (int argc, char** argv);	// below main()
+    int main(int argc, char** argv); // below main()
 
-	return  main (__argc, __argv);
+    return main(__argc, __argv);
 }
 #endif // _WINDOWS
 
 #else
-#include <unistd.h>    // sync()
-#endif // _WIN32 || _WIN64
+#include <unistd.h> // sync()
+#endif              // _WIN32 || _WIN64
 
 // ----------------------------------------------------------------------------
 
-#include <stdlib.h>    // exit(), EXIT_SUCCESS, EXIT_FAILURE
-#include <signal.h>    // signal(), SIGTERM
+#include <stdlib.h> // exit(), EXIT_SUCCESS, EXIT_FAILURE
+#include <signal.h> // signal(), SIGTERM
 #include <UgUtil.h>
 #include <UgFileUtil.h>
 #include <UgtkApp.h>
 
 // OpenSSL
 #ifdef USE_OPENSSL
-#include <UgThread.h>
+#include <openssl/opensslv.h>
 #include <openssl/crypto.h>
+
+// OpenSSL 1.1.0+ handles threading internally, no setup needed
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+
+static void
+init_locks(void)
+{
+    // OpenSSL 1.1.0+ handles threading internally
+}
+
+static void
+kill_locks(void)
+{
+    // OpenSSL 1.1.0+ handles threading internally
+}
+
+#else // OpenSSL < 1.1.0
+
+#include <UgThread.h>
 
 static UgMutex* lockarray;
 
-static void  lock_callback (int mode, int type, char *file, int line)
+static void
+lock_callback(int mode, int type, char* file, int line)
 {
-	(void)file;
-	(void)line;
+    (void) file;
+    (void) line;
 
-	if (mode & CRYPTO_LOCK) {
-		ug_mutex_lock (&(lockarray[type]));
-	}
-	else {
-		ug_mutex_unlock (&(lockarray[type]));
-	}
+    if (mode & CRYPTO_LOCK) {
+        ug_mutex_lock(&(lockarray[type]));
+    } else {
+        ug_mutex_unlock(&(lockarray[type]));
+    }
 }
 
-static unsigned long  thread_id (void)
+static unsigned long
+thread_id(void)
 {
-	unsigned long ret;
+    unsigned long ret;
 
-	ret = (unsigned long) ug_thread_self();
-	return(ret);
+    ret = (unsigned long) ug_thread_self();
+    return (ret);
 }
 
-static void  init_locks (void)
+static void
+init_locks(void)
 {
-	int i;
+    int i;
 
-	lockarray = (UgMutex*) OPENSSL_malloc (CRYPTO_num_locks() *
-	                                       sizeof(UgMutex));
-	for (i=0; i<CRYPTO_num_locks(); i++) {
-		ug_mutex_init (&(lockarray[i]));
-	}
+    lockarray = (UgMutex*) OPENSSL_malloc(CRYPTO_num_locks() * sizeof(UgMutex));
+    for (i = 0; i < CRYPTO_num_locks(); i++) {
+        ug_mutex_init(&(lockarray[i]));
+    }
 
-	CRYPTO_set_id_callback ((unsigned long (*)())thread_id);
-	CRYPTO_set_locking_callback ((void (*)())lock_callback);
+    CRYPTO_set_id_callback((unsigned long (*)()) thread_id);
+    CRYPTO_set_locking_callback((void (*)()) lock_callback);
 }
 
-static void kill_locks(void)
+static void
+kill_locks(void)
 {
-	int i;
+    int i;
 
-	CRYPTO_set_locking_callback (NULL);
-	for (i = 0; i < CRYPTO_num_locks (); i++)
-		ug_mutex_clear (&(lockarray[i]));
+    CRYPTO_set_locking_callback(NULL);
+    for (i = 0; i < CRYPTO_num_locks(); i++)
+        ug_mutex_clear(&(lockarray[i]));
 
-	OPENSSL_free(lockarray);
+    OPENSSL_free(lockarray);
 }
+
+#endif // OPENSSL_VERSION_NUMBER
 #endif // USE_OPENSSL
 
 // GnuTLS
@@ -164,9 +186,10 @@ static void kill_locks(void)
 
 GCRY_THREAD_OPTION_PTHREAD_IMPL;
 
-static void init_locks (void)
+static void
+init_locks(void)
 {
-	gcry_control (GCRYCTL_SET_THREAD_CBS, &gcry_threads_pthread);
+    gcry_control(GCRYCTL_SET_THREAD_CBS, &gcry_threads_pthread);
 }
 
 #define kill_locks()
@@ -180,44 +203,45 @@ static void init_locks (void)
 // GStreamer
 #ifdef HAVE_GSTREAMER
 #include <gst/gst.h>
-gboolean  gst_inited  = FALSE;
+gboolean gst_inited = FALSE;
 #endif
 
 #include <glib/gi18n.h>
 
 // ----------------------------------------------------------------------------
 // SIGTERM
-UgtkApp*  ugtk_app;
-gboolean  ugtk_quitting = FALSE;
+UgtkApp* ugtk_app;
+gboolean ugtk_quitting = FALSE;
 
-static void sys_signal_handler (int sig)
+static void
+sys_signal_handler(int sig)
 {
-//	void  ug_socket_server_close (UgSocketServer* server);
+    //	void  ug_socket_server_close (UgSocketServer* server);
 
-	switch (sig) {
-	case SIGINT:  // Ctrl-C
-	case SIGTERM: // termination request
-	case SIGABRT: // Abnormal termination (abort)
-//	case SIGQUIT:
-		// avoid crash when program re-enter signal handler.
-		if (ugtk_quitting == FALSE) {
-			ugtk_quitting = TRUE;
-			// This will quit gtk_main() to main()
-			ugtk_app_quit (ugtk_app);
+    switch (sig) {
+    case SIGINT:  // Ctrl-C
+    case SIGTERM: // termination request
+    case SIGABRT: // Abnormal termination (abort)
+                  //	case SIGQUIT:
+        // avoid crash when program re-enter signal handler.
+        if (ugtk_quitting == FALSE) {
+            ugtk_quitting = TRUE;
+            // This will quit gtk_main() to main()
+            ugtk_app_quit(ugtk_app);
 #if !(defined _WIN32 || defined _WIN64)
-			sync();
+            sync();
 #endif
-		}
-		break;
+        }
+        break;
 
-//	case SIGSEGV:
-//		signal (SIGSEGV, NULL);
-//		ug_socket_server_close (ugtk_app->rpc->server);
-//		break;
+        //	case SIGSEGV:
+        //		signal (SIGSEGV, NULL);
+        //		ug_socket_server_close (ugtk_app->rpc->server);
+        //		break;
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 }
 
 /*
@@ -240,100 +264,98 @@ static void sys_set_sigaction ()
 // ----------------------------------------------------------------------------
 // main ()
 
-int  main (int argc, char** argv)
+int
+main(int argc, char** argv)
 {
-	UgetRpc*  rpc;
+    UgetRpc* rpc;
 
-	// I18N
-	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
+    // I18N
+    bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
 
-	// Command line
-	if (ug_args_find_version (argc-1, argv+1)) {
+    // Command line
+    if (ug_args_find_version(argc - 1, argv + 1)) {
 #if (defined _WIN32 || defined _WIN64) && defined _WINDOWS
-		win32_console_init ();
+        win32_console_init();
 #endif
-		g_print ("uGet " PACKAGE_VERSION " for GTK+" "\n");
-		return EXIT_SUCCESS;
-	}
-	if (ug_args_find_help (argc-1, argv+1)) {
+        g_print("uGet " PACKAGE_VERSION " for GTK+"
+                "\n");
+        return EXIT_SUCCESS;
+    }
+    if (ug_args_find_help(argc - 1, argv + 1)) {
 #if (defined _WIN32 || defined _WIN64) && defined _WINDOWS
-		win32_console_init ();
+        win32_console_init();
 #endif
-		ug_option_entry_print_help (uget_option_entry,
-		                            argv[0], "[URL]", NULL);
-		return EXIT_SUCCESS;
-	}
+        ug_option_entry_print_help(uget_option_entry, argv[0], "[URL]", NULL);
+        return EXIT_SUCCESS;
+    }
 
-	// JSON-RPC server
-	rpc = uget_rpc_new (NULL);
+    // JSON-RPC server
+    rpc = uget_rpc_new(NULL);
 #ifdef USE_UNIX_DOMAIN_SOCKET
-	rpc->backup_dir = ug_build_filename (ugtk_get_config_dir (),
-	                                     UGTK_APP_DIR, "RPC-socket", NULL);
-	uget_rpc_use_unix_socket (rpc, rpc->backup_dir, -1);
-	ug_free (rpc->backup_dir);
+    rpc->backup_dir = ug_build_filename(ugtk_get_config_dir(), UGTK_APP_DIR, "RPC-socket", NULL);
+    uget_rpc_use_unix_socket(rpc, rpc->backup_dir, -1);
+    ug_free(rpc->backup_dir);
 #endif
-	rpc->backup_dir = g_build_filename (ugtk_get_config_dir (),
-	                                    UGTK_APP_DIR, "attachment", NULL);
-	ug_create_dir_all (rpc->backup_dir, -1);
-	if (uget_rpc_start_server (rpc, TRUE))
-		uget_rpc_send_command (rpc, argc-1, argv+1);
-	else {
-		uget_rpc_send_command (rpc, argc-1, argv+1);
-		uget_rpc_free (rpc);
-		return EXIT_SUCCESS;
-	}
+    rpc->backup_dir = g_build_filename(ugtk_get_config_dir(), UGTK_APP_DIR, "attachment", NULL);
+    ug_create_dir_all(rpc->backup_dir, -1);
+    if (uget_rpc_start_server(rpc, TRUE))
+        uget_rpc_send_command(rpc, argc - 1, argv + 1);
+    else {
+        uget_rpc_send_command(rpc, argc - 1, argv + 1);
+        uget_rpc_free(rpc);
+        return EXIT_SUCCESS;
+    }
 
-	// GTK+
-	gtk_init (&argc, &argv);
-	// SSL
+    // GTK+
+    gtk_init(&argc, &argv);
+    // SSL
 #if defined USE_GNUTLS || defined USE_OPENSSL
-	init_locks ();
+    init_locks();
 #endif
-	// libnotify
+    // libnotify
 #ifdef HAVE_LIBNOTIFY
-	notify_init ("uGet");
+    notify_init("uGet");
 #endif
-	// GStreamer
+    // GStreamer
 #ifdef HAVE_GSTREAMER
-	gst_inited = gst_init_check (&argc, &argv, NULL);
+    gst_inited = gst_init_check(&argc, &argv, NULL);
 #endif
 
-	ugtk_app = g_malloc0 (sizeof (UgtkApp));
-	ugtk_app_init (ugtk_app, rpc);
+    ugtk_app = g_malloc0(sizeof(UgtkApp));
+    ugtk_app_init(ugtk_app, rpc);
 
-	// signal handler
-	signal (SIGINT,  sys_signal_handler);
-	signal (SIGTERM, sys_signal_handler);
-	signal (SIGABRT, sys_signal_handler);
-//	signal (SIGSEGV, sys_signal_handler);
-//	signal (SIGQUIT, sys_signal_handler);
+    // signal handler
+    signal(SIGINT, sys_signal_handler);
+    signal(SIGTERM, sys_signal_handler);
+    signal(SIGABRT, sys_signal_handler);
+    //	signal (SIGSEGV, sys_signal_handler);
+    //	signal (SIGQUIT, sys_signal_handler);
 
-	gtk_main ();
+    gtk_main();
 
-	// avoid crash when program re-enter signal handler.
-	ugtk_quitting = TRUE;
-	// clear/free other resource
-	uget_app_clear_attachment ((UgetApp*) ugtk_app);
-	ugtk_app_final (ugtk_app);
-	g_free (ugtk_app);
+    // avoid crash when program re-enter signal handler.
+    ugtk_quitting = TRUE;
+    // clear/free other resource
+    uget_app_clear_attachment((UgetApp*) ugtk_app);
+    ugtk_app_final(ugtk_app);
+    g_free(ugtk_app);
 
-	// sleep 2 second to wait thread and shutdown RPC
-	g_usleep (1000000);
-	uget_rpc_free (rpc);
-	g_usleep (1000000);
+    // sleep 2 second to wait thread and shutdown RPC
+    g_usleep(1000000);
+    uget_rpc_free(rpc);
+    g_usleep(1000000);
 
-	// libnotify
+    // libnotify
 #ifdef HAVE_LIBNOTIFY
-	if (notify_is_initted ())
-		notify_uninit ();
+    if (notify_is_initted())
+        notify_uninit();
 #endif
-	// SSL
+    // SSL
 #if defined USE_GNUTLS || defined USE_OPENSSL
-	kill_locks ();
+    kill_locks();
 #endif
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
-

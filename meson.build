@@ -1,5 +1,5 @@
 project('uget', 'c',
-  version : '2.2.4',
+  version : '2.3.0',
   default_options : ['warning_level=1', 'c_std=gnu99'])
 
 add_project_arguments('-DHAVE_CONFIG_H', language : 'c')
