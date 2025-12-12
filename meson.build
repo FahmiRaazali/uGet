@@ -7,39 +7,14 @@ add_project_arguments('-DHAVE_CONFIG_H', language : 'c')
 cc = meson.get_compiler('c')
 
 # Dependencies
-gtk_version = get_option('gtk_version')
-
-# GTK dependency - conditional based on version
-gtk3_dep = disabler()
-gtk4_dep = disabler()
-
-if gtk_version == '3' or gtk_version == 'both'
-  gtk3_dep = dependency('gtk+-3.0', version : '>= 3.4')
-endif
-
-if gtk_version == '4' or gtk_version == 'both'
-  gtk4_dep = dependency('gtk4', version : '>= 4.0')
-endif
-
-# For backward compatibility, set gtk_dep to whichever is enabled
-# If both are enabled, gtk_dep will be gtk3_dep
-if gtk_version == '3' or gtk_version == 'both'
-  gtk_dep = gtk3_dep
-else
-  gtk_dep = gtk4_dep
-endif
+gtk_dep = dependency('gtk+-3.0', version : '>= 3.4')
 
 glib_dep = dependency('glib-2.0')
 gthread_dep = dependency('gthread-2.0')
 curl_dep = dependency('libcurl', version : '>= 7.19.1')
 libnotify_dep = dependency('libnotify', required : get_option('notify'))
 
-# AppIndicator - different package for GTK4
-if gtk_version == '4'
-  appindicator_dep = dependency('ayatana-appindicator3-0.1', required : get_option('appindicator'))
-else
-  appindicator_dep = dependency('appindicator3-0.1', required : get_option('appindicator'))
-endif
+appindicator_dep = dependency('appindicator3-0.1', required : get_option('appindicator'))
 
 gstreamer_dep = dependency('gstreamer-1.0', required : get_option('gstreamer'))
 if not gstreamer_dep.found()
@@ -111,4 +86,3 @@ subdir('src')
 subdir('data')
 subdir('po')
 subdir('tests')
-subdir('src/ui-gtk4')

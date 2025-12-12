@@ -1,4 +1,3 @@
-option('gtk_version', type : 'combo', choices : ['3', '4', 'both'], value : '3', description : 'GTK version to build (3, 4, or both)')
 option('notify', type : 'feature', value : 'enabled', description : 'Enable libnotify support')
 option('appindicator', type : 'feature', value : 'auto', description : 'Build support for application indicators')
 option('gstreamer', type : 'feature', value : 'enabled', description : 'Enable GStreamer audio support')
