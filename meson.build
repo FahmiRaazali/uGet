@@ -61,6 +61,15 @@ if get_option('unix_socket')
   conf_data.set('USE_UNIX_DOMAIN_SOCKET', 1)
 endif
 
+# Feature flags - all features enabled for GTK UI compatibility
+# Future: Add conditional compilation with #ifdef guards in UI code
+# to allow disabling individual plugins/features
+conf_data.set('HAVE_PLUGIN_CURL', 1)
+conf_data.set('HAVE_PLUGIN_ARIA2', 1)
+conf_data.set('HAVE_RSS', 1)
+conf_data.set('HAVE_BATCH_SEQUENCE', 1)
+conf_data.set('HAVE_IPC', 1)
+
 if openssl_dep.found()
   conf_data.set('USE_OPENSSL', 1)
 endif

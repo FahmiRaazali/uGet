@@ -1,12 +1,10 @@
 uGet 2.3.0: (2025-01-12)
-1. Removed all GTK3 deprecated API warnings.
-2. Updated OpenSSL threading for 1.1.0+ compatibility.
-3. Removed outdated Windows IDE project files (use Meson instead).
-4. Converted documentation to Markdown format.
-
-uGet 2.2.4: (2025-12-01)
 1. Migrated build system from Autotools/CMake to Meson.
 2. Restructured project layout into src/ and data/ directories.
+3. Removed outdated Windows IDE project files (use Meson instead).
+4. Removed Android.mk build files (Android build not supported).
+5. Wrapped GTK3 deprecated API calls with G_GNUC_BEGIN/END_IGNORE_DEPRECATIONS.
+6. Converted documentation to Markdown format.
 
 uGet 2.2.3: (2020-01-01)
 1. add parser for YouTube recently changed field.

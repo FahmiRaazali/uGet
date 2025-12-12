@@ -94,3 +94,7 @@ tasks/
 
 # Editor-specific
 .zed/
+
+# Lume site build output
+site/_site/
+site/.cache/

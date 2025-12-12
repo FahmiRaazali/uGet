@@ -1,8 +1,47 @@
-option('notify', type : 'feature', value : 'enabled', description : 'Enable libnotify support')
-option('appindicator', type : 'feature', value : 'auto', description : 'Build support for application indicators')
-option('gstreamer', type : 'feature', value : 'enabled', description : 'Enable GStreamer audio support')
-option('pwmd', type : 'feature', value : 'disabled', description : 'Enable pwmd support')
-option('rss_notify', type : 'boolean', value : true, description : 'Enable RSS Notify')
-option('unix_socket', type : 'boolean', value : false, description : 'Enable UNIX Domain Socket')
-option('openssl', type : 'feature', value : 'enabled', description : 'Enable OpenSSL support')
-option('gnutls', type : 'boolean', value : false, description : 'Enable GnuTLS support')
+# =============================================================================
+# uGet Build Options
+# =============================================================================
+# Configure with: meson setup builddir -Doption=value
+# View options:   meson configure builddir
+# =============================================================================
+
+# UI and notification options
+option('notify', type : 'feature', value : 'enabled',
+       description : 'Enable libnotify support for download notifications')
+option('appindicator', type : 'feature', value : 'auto',
+       description : 'Build support for application indicators (system tray)')
+option('gstreamer', type : 'feature', value : 'enabled',
+       description : 'Enable GStreamer audio support for sound notifications')
+
+# Security options
+option('pwmd', type : 'feature', value : 'disabled',
+       description : 'Enable pwmd password manager support')
+option('openssl', type : 'feature', value : 'enabled',
+       description : 'Enable OpenSSL support for HTTPS')
+option('gnutls', type : 'boolean', value : false,
+       description : 'Enable GnuTLS support (alternative to OpenSSL)')
+
+# IPC options
+option('unix_socket', type : 'boolean', value : false,
+       description : 'Use UNIX Domain Socket instead of TCP for IPC')
+
+# Runtime options (always compiled, but can be disabled at runtime)
+option('rss_notify', type : 'boolean', value : true,
+       description : 'Enable RSS feed notifications by default')
+
+# =============================================================================
+# Future Feature Flags (require UI code changes to fully support)
+# =============================================================================
+# These are documented for future modular builds. Currently the GTK UI
+# requires all plugins and features to be compiled in.
+#
+# Planned options (not yet implemented):
+# - plugin_curl: Disable libcurl download backend
+# - plugin_aria2: Disable aria2 RPC download backend
+# - rss: Disable RSS feed support
+# - batch_sequence: Disable batch/sequence URL generation
+# - ipc: Disable browser integration IPC
+#
+# To implement these, the GTK UI code would need #ifdef guards around
+# the corresponding functionality.
+# =============================================================================
